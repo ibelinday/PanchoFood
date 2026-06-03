@@ -1,42 +1,63 @@
 import NutricionItem from "@/src/components/NurtricionItem";
 import ScoreBadge from "@/src/components/ScoreBabage";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
-
-
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
+// 🌟 Importamos esto para esquivar la isla/notch del iPhone
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function ProductosShowScreen() {
     const { id } = useLocalSearchParams();
+    const router = useRouter();
+    const safeArea = useSafeAreaInsets(); // Calculamos los márgenes
 
     return (
-        <ScrollView style={styles.pantalla} bounces={false}>
-            <View style={styles.cabeceraFondo}>
-                <Text style={{ fontSize: 50 }}>🥛</Text>
-            </View>
-            <View style={styles.tarjetaBlanca}>
-                <View style={styles.botonFavoritoFlotante}>
-                    <Ionicons name="heart" size={24} color={"#1e5A32"} />
-                </View>
-                <Text style={styles.textoMarca}>OATLY </Text>
-                <Text style={styles.textoTitulo}> the original Oalty </Text>
-                <View style={styles.filaScores}>
-                    <ScoreBadge titulo="NUTRI-SCORE" letra="A" colorFondo="#0A8A43" />
-                    <ScoreBadge titulo="NOVA GROUP" letra="1" colorFondo="#FFC107" />
-                    <ScoreBadge titulo="ECO-SCORE" letra="A" colorFondo="#0A8A43" />
-                </View>
-                <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filaNutricion}>
-                    <NutricionItem titulo="ENERGY" valor="193 kJ" />
-                    <NutricionItem titulo="FAT" valor="1.5g" />
-                    <NutricionItem titulo="PROTEIN" valor="1.0g" />
-                    <NutricionItem titulo="SALT" valor="0.10g" />
-                </ScrollView>
-            </View>
-        </ScrollView>
+        <View style={styles.pantalla}>
+            {/* 🌟 BOTÓN DE VOLVER FLOTANTE A PRUEBA DE BALAS */}
+            <Pressable
+                onPress={() => router.back()}
+                style={{
+                    position: "absolute",
+                    top: safeArea.top + 10,  // Lo bajamos para que no tape la hora
+                    left: 20,
+                    zIndex: 999,             // Garantiza que esté siempre al frente
+                    backgroundColor: "rgba(0, 0, 0, 0.15)", // Un circulito sutil
+                    padding: 8,
+                    borderRadius: 50,
+                }}
+            >
+                <Ionicons name="arrow-back" size={28} color="#ffffff" />
+            </Pressable>
 
+            {/* Le sacamos el style={styles.pantalla} al ScrollView porque ahora lo tiene el View padre */}
+            <ScrollView bounces={false} showsVerticalScrollIndicator={false}>
+                <View style={styles.cabeceraFondo}>
+                    <Text style={{ fontSize: 50 }}>🥛</Text>
+                </View>
+                <View style={styles.tarjetaBlanca}>
+                    <View style={styles.botonFavoritoFlotante}>
+                        <Ionicons name="heart" size={24} color={"#1e5A32"} />
+                    </View>
+                    <Text style={styles.textoMarca}>OATLY</Text>
+                    <Text style={styles.textoTitulo}>the original Oalty</Text>
+                    <View style={styles.filaScores}>
+                        <ScoreBadge titulo="NUTRI-SCORE" letra="A" colorFondo="#0A8A43" />
+                        <ScoreBadge titulo="NOVA GROUP" letra="1" colorFondo="#FFC107" />
+                        <ScoreBadge titulo="ECO-SCORE" letra="A" colorFondo="#0A8A43" />
+                    </View>
+                    <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.filaNutricion}>
+                        <NutricionItem titulo="ENERGY" valor="193 kJ" />
+                        <NutricionItem titulo="FAT" valor="1.5g" />
+                        <NutricionItem titulo="PROTEIN" valor="1.0g" />
+                        <NutricionItem titulo="SALT" valor="0.10g" />
+                    </ScrollView>
+                </View>
+            </ScrollView>
+        </View>
     );
-
 }
+
+
 
 const styles = StyleSheet.create({
     pantalla: {

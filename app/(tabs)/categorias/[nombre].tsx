@@ -3,8 +3,9 @@ import { useMemo, useState } from "react";
 import { FlatList, StatusBar, StyleSheet, Text, View } from "react-native";
 
 // Componentes
+import BackButton from "@/src/components/BackButton";
 import Buscador from "@/src/components/Buscador";
-import Producto from "@/src/components/Producto"; // 🌟 ACÁ IMPORTAMOS TU COMPONENTE
+import Producto from "@/src/components/Producto";
 import Texto from "@/src/components/Texto";
 
 // Hooks y Utils
@@ -32,7 +33,8 @@ export default function ScreenCategoria() {
                     title: nombreFormateado,
                     headerTitleStyle: { color: "#ffffff" },
                     headerShown: true,
-                    headerStyle: { backgroundColor: "#c944a3" }
+                    headerStyle: { backgroundColor: "#c944a3" },
+                    headerLeft: () => <BackButton color="#ffffff" />
                 }}
             />
 
