@@ -3,7 +3,7 @@ import ScoreBadge from "@/src/components/ScoreBabage";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { ScrollView, StyleSheet, Text, View, Pressable } from "react-native";
-// 🌟 Importamos esto para esquivar la isla/notch del iPhone
+
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export function ProductosShowScreen() {
@@ -13,7 +13,7 @@ export function ProductosShowScreen() {
 
     return (
         <View style={styles.pantalla}>
-            {/* 🌟 BOTÓN DE VOLVER FLOTANTE A PRUEBA DE BALAS */}
+
             <Pressable
                 onPress={() => router.back()}
                 style={{

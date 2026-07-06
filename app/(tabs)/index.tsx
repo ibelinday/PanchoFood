@@ -39,7 +39,7 @@ export default function IndexScreen() {
     const router = useRouter();
 
     return (
-        <ScrollView contentContainerStyle={[styles.container, { paddingTop: safeArea.top }]}>
+        <ScrollView contentContainerStyle={[styles.container]}>
             <GridCategorias
                 title="Categorias"
                 items={categorias}
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         gap: 20,
-        paddingVertical: 49,
+        paddingVertical: 20,
         paddingHorizontal: 30,
     },
 

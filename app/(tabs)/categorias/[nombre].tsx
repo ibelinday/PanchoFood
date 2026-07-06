@@ -11,8 +11,10 @@ import Texto from "@/src/components/Texto";
 // Hooks y Utils
 import { useProductos } from "@/src/hooks/useProductos";
 import { transformCategoriaNombre } from "@/src/transformers/categoria-nombre.transformer";
+import { useTheme } from "@/src/components/ThemeProvider";
 
 export default function ScreenCategoria() {
+    const { colors } = useTheme();
     const { nombre } = useLocalSearchParams();
     const categoria = typeof nombre === "string" ? nombre : "Sin nombre";
     const nombreFormateado = transformCategoriaNombre(categoria);
@@ -31,9 +33,9 @@ export default function ScreenCategoria() {
             <Stack.Screen
                 options={{
                     title: nombreFormateado,
-                    headerTitleStyle: { color: "#ffffff" },
+                    headerTitleStyle: { color: colors.textoPrincipal },
                     headerShown: true,
-                    headerStyle: { backgroundColor: "#c944a3" },
+                    headerStyle: { backgroundColor: colors.principal, height: 40, display: "none" },
                     headerLeft: () => <BackButton color="#ffffff" />
                 }}
             />
@@ -57,7 +59,8 @@ export default function ScreenCategoria() {
                         <Producto
                             id={item.id}
                             nombre={item.name || item.product_name}
-                            marca={`ID: ${item.id}`}
+                            marca={item.brands || `ID: ${item.id}`}
+                            image_url={item.image_url}
                         />
                     )}
                     contentContainerStyle={styles.listaPadding}

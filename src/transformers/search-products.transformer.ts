@@ -12,9 +12,19 @@ export function transformSearchProductsResponse(
     };
 
     myResponse.products = response.products.map((product) => {
+        // Priorizar diferentes campos de imagen que proporciona OpenFoodFacts
+        const imageUrl =
+            product.image_front_small_url ||
+            product.image_small_url ||
+            product.image_front_url ||
+            product.image_url ||
+            "";
+
         return {
             id: product._id,
             name: product.product_name,
+            image_url: imageUrl,
+            brands: product.brands,
         };
     });
 
@@ -32,4 +42,6 @@ type MyProductSearchResponse = {
 type MyProduct = {
     id: string;
     name: string;
+    image_url?: string;
+    brands?: string;
 };

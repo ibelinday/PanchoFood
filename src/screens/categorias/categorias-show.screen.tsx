@@ -1,6 +1,7 @@
 import { useProductos } from "@/src/hooks/useProductos";
 import { ROUTES } from "@/src/navigation/routes";
 import BackButton from "@/src/components/BackButton";
+import Producto from "@/src/components/Producto";
 import { Link, Stack, useLocalSearchParams } from "expo-router";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 
@@ -18,8 +19,8 @@ export function CategoriasShowScreen() {
                 title: nombre,
                 headerLeft: () => <BackButton />
             }} />
-            <Text style={styles.title}>Categoria</Text>
-            <Text style={styles.value}>{nombre}</Text>
+            <Text style={styles.title}>{nombre}</Text>
+
             <FlatList
                 data={data?.products}
                 contentContainerStyle={{
@@ -27,15 +28,12 @@ export function CategoriasShowScreen() {
                 }}
                 keyExtractor={(item) => item.id}
                 renderItem={({ item }) => (
-                    <Link
-                        href={{ pathname: ROUTES.PRODUCTO, params: { id: item.id } }}>
-                        <View
-                            style={{ padding: 12 }}>
-                            <Text style={{ fontSize: 18 }}>
-                                {item.name} - {item.id}
-                            </Text>
-                        </View>
-                    </Link>
+                    <Producto
+                        id={item.id}
+                        nombre={item.name}
+                        marca={item.brands || "Sin marca"}
+                        image_url={item.image_url}
+                    />
                 )}
             />
         </View>
@@ -45,16 +43,12 @@ export function CategoriasShowScreen() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
         gap: 12,
-        padding: 24,
     },
     title: {
-        fontSize: 28,
-        fontWeight: "700",
-    },
-    value: {
         fontSize: 20,
+        fontWeight: "700",
+        marginHorizontal: 16,
+        marginTop: 16,
     },
 });

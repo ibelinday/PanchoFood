@@ -1,17 +1,20 @@
 import { Link } from 'expo-router';
 import React from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View, Image } from 'react-native';
 
 interface ProductoProps {
     id: string;
     nombre: string;
     marca: string;
+    image_url?: string;
 }
 
-export default function Producto({ id, nombre, marca }: ProductoProps) {
+export default function Producto({ id, nombre, marca, image_url }: ProductoProps) {
     // Si el nombre viene vacío por un error de la API, le ponemos un texto por defecto
     const titulo = nombre || "Producto sin nombre";
     const codigo = marca || "Sin ID";
+    const [loadError, setLoadError] = React.useState(false);
+    const hasImage = !loadError && image_url && image_url.trim().length > 0;
 
     return (
         <Link href={`/productos/${id}`} asChild>
@@ -20,7 +23,16 @@ export default function Producto({ id, nombre, marca }: ProductoProps) {
 
                     {/* Izquierda: El cuadrado gris para la foto */}
                     <View style={styles.cajaFoto}>
-                        <Text style={{ color: '#C0C0C4', fontSize: 24 }}>🍴</Text>
+                        {hasImage ? (
+                            <Image
+                                source={{ uri: image_url }}
+                                style={styles.imagen}
+                                onError={() => setLoadError(true)}
+                                onLoad={() => setLoadError(false)}
+                            />
+                        ) : (
+                            <Text style={{ color: '#C0C0C4', fontSize: 24 }}>🍴</Text>
+                        )}
                     </View>
 
                     {/* Centro: Textos y Etiquetas */}
@@ -66,6 +78,12 @@ const styles = StyleSheet.create({
         borderRadius: 16,
         justifyContent: 'center',
         alignItems: 'center',
+        overflow: 'hidden',
+    },
+    imagen: {
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
     },
     bloqueTextos: {
         flex: 1,
