@@ -1,15 +1,32 @@
 export async function searchProducts(
     categorias: string,
+    page = 1,
+    pageSize = 20,
 ): Promise<ProductSearchResponse> {
-    const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
-    const url = `${BASE_URL}/v2/search`;
+    const BASE_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") ?? "https://world.openfoodfacts.org/api";
+    const url = `${BASE_URL}/v0/search`;
     const params = new URLSearchParams({
-        // brands_tags: "ferrero",
-        categories_tags: categorias,
+        tagtype_0: "categories",
+        tag_contains_0: "contains",
+        tag_0: categorias,
+        page: String(page),
+        page_size: String(pageSize),
+        fields: [
+            "_id",
+            "product_name",
+            "brands",
+            "code",
+            "image_front_small_url",
+            "image_small_url",
+            "image_front_url",
+            "image_url",
+        ].join(","),
     });
 
-    const response = await fetch(`${url}?${params.toString()}`, {
-        headers: { "User-Agent": "UNTDF TNT 2026" },
+    const fullUrl = `${url}?${params.toString()}`;
+
+    const response = await fetch(fullUrl, {
+        headers: { "User-Agent": "Mozilla/5.0" },
     });
 
     if (!response.ok) {
@@ -19,6 +36,39 @@ export async function searchProducts(
     const data = await response.json();
 
     return data as ProductSearchResponse;
+}
+
+export async function fetchProductByCode(code: string): Promise<Product | null> {
+    const BASE_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") ?? "https://world.openfoodfacts.org/api";
+    const apiHost = BASE_URL.endsWith("/api")
+        ? BASE_URL.replace(/\/api$/, "")
+        : BASE_URL;
+    const url = `${apiHost}/v0/product/${encodeURIComponent(code)}.json`;
+
+    try {
+        const response = await fetch(url, {
+            headers: { "User-Agent": "UNTDF TNT 2026" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // OpenFoodFacts returns { status: 1, product: { ... } } when found
+        if (data && data.status === 1 && data.product) {
+            return data.product as Product;
+        }
+
+        return null;
+    } catch (err) {
+        // Propaga el error hacia el llamador o devuelve null según prefieras
+        // aquí devolvemos null para comportamiento resiliente
+        // eslint-disable-next-line no-console
+        console.warn("fetchProductByCode error:", err);
+        return null;
+    }
 }
 
 // ===================================================

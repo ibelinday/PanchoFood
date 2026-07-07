@@ -1,14 +1,15 @@
 import { Feather } from '@expo/vector-icons';
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 interface BuscadorProps {
     placeholder?: string;
     value: string;
     onChangeText: (text: string) => void; // En React Native se usa onChangeText para strings
+    onCameraPress?: () => void;
 }
 
-export default function Buscador({ placeholder = "Buscar...", value, onChangeText }: BuscadorProps) {
+export default function Buscador({ placeholder = "Buscar...", value, onChangeText, onCameraPress }: BuscadorProps) {
     // Si el usuario escribió algo, el texto se vuelve blanco (más llamativo en fondos oscuros)
     // Si está vacío, usa el color que pediste.
     const colorTextoActivo = value.length > 0 ? '#C87C86' : '#64686f';
@@ -34,6 +35,11 @@ export default function Buscador({ placeholder = "Buscar...", value, onChangeTex
                 autoCorrect={false}
                 autoCapitalize="none"
             />
+            {onCameraPress && (
+                <Pressable onPress={onCameraPress} style={styles.cameraButton}>
+                    <Feather name="camera" size={18} color={colorIcono} />
+                </Pressable>
+            )}
         </View>
     );
 }
@@ -59,5 +65,16 @@ const styles = StyleSheet.create({
         fontSize: 16,
         paddingVertical: 0,         // Resetea paddings por defecto de Android
         fontWeight: '500',
+    },
+    cameraButton: {
+        padding: 10,
+        marginLeft: 8,
+        borderRadius: 12,
+        backgroundColor: '#ffffff',
+        shadowColor: '#000',
+        shadowOpacity: 0.08,
+        shadowOffset: { width: 0, height: 2 },
+        shadowRadius: 4,
+        elevation: 2,
     },
 });

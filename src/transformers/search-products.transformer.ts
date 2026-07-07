@@ -25,6 +25,7 @@ export function transformSearchProductsResponse(
             name: product.product_name,
             image_url: imageUrl,
             brands: product.brands,
+            code: product.code,
         };
     });
 
@@ -42,6 +43,8 @@ type MyProductSearchResponse = {
 type MyProduct = {
     id: string;
     name: string;
+    product_name?: string;
     image_url?: string;
     brands?: string;
+    code?: string;
 };

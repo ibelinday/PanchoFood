@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useContext, useState } from "react";
 import { ThemeContextType } from "../types/Theme";
 import { paletaClaro } from "../data/paletaClaro";
+import { paletaOscuro } from "../data/paletaOscuro";
 
 
 export const ThemeContext = createContext<ThemeContextType>({

@@ -1,7 +1,8 @@
 export async function getCategoriesV3(query: string = ""): Promise<string[]> {
     // El dominio world.openfoodfacts.org es el estándar
-    const BASE_URL = process.env.EXPO_PUBLIC_API_URL;
-    const baseUrl = `${BASE_URL}/v3/taxonomy_suggestions`;
+    const BASE_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") ?? "https://world.openfoodfacts.org/api";
+    const apiHost = BASE_URL.endsWith("/api") ? BASE_URL.replace(/\/api$/, "") : BASE_URL;
+    const baseUrl = `${apiHost}/v3/taxonomy_suggestions`;
 
     const params = new URLSearchParams({
         tagtype: "categories",

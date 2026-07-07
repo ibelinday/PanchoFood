@@ -1,33 +1,32 @@
-import { ThemeProvider, useTheme } from "@/src/components/ThemeProvider";
+import { useTheme } from "@/src/components/ThemeProvider";
 import { Feather } from "@expo/vector-icons";
 import { Tabs } from "expo-router";
-import { StyleSheet, Platform } from "react-native";
-import { View } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function RootLayout() {
     const { colors } = useTheme();
+    const insets = useSafeAreaInsets();
+
+    const tabBarStyle = {
+        ...styles.tabBar,
+        height: Platform.OS === "ios" ? 56 + insets.bottom : 62,
+        paddingBottom: Platform.OS === "ios" ? Math.max(insets.bottom - 2, 10) : 8,
+        bottom: Platform.OS === "ios" ? -insets.bottom : 0,
+    };
 
     return (
         <Tabs
             screenOptions={{
                 headerShown: false,
-                tabBarActiveTintColor: "#ffffff",  // Color del ícono y texto cuando la pestaña está activa
-                tabBarInactiveTintColor: "rgba(255, 255, 255, 0.4)",
-                // Oculta las etiquetas de texto si solo quieres dejar los íconos como en la foto
+                tabBarActiveTintColor: "#ffffff",
+                tabBarInactiveTintColor: "rgba(255, 255, 255, 0.55)",
                 tabBarShowLabel: false,
-                tabBarStyle: [
-                    styles.tabBar,
-                    {
-                        bottom: Platform.OS === 'ios' ? 25 : 15,
-                        marginLeft: 20,
-                        marginRight: 20,
-                    }
-                ],
+                tabBarStyle,
                 sceneStyle: {
-                    paddingBottom: 80,
+                    paddingBottom: 0,
                     backgroundColor: colors.fondo,
-                }
+                },
             }}
         >
             <Tabs.Screen
@@ -66,12 +65,7 @@ export default function RootLayout() {
                 }}
             />
 
-            <Tabs.Screen
-                name="categorias/[nombre]"
-                options={{
-                    href: null
-                }}
-            />
+            {/* La ruta dinámica de categoría no debe registrarse como pestaña fija */}
         </Tabs>
     );
 }
@@ -79,16 +73,17 @@ export default function RootLayout() {
 const styles = StyleSheet.create({
     tabBar: {
         position: "absolute",
-        height: 65,
-        borderRadius: 35,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        paddingTop: 8,
+        borderRadius: 0,
         borderTopWidth: 0,
-        elevation: 5,
+        elevation: 8,
         shadowColor: "#000",
-        shadowOffset: { width: 0, height: 10 },
-        shadowOpacity: 0.3,
-        shadowRadius: 10,
+        shadowOffset: { width: 0, height: -2 },
+        shadowOpacity: 0.12,
+        shadowRadius: 6,
         backgroundColor: "#c944a3",
-        // Empuja los íconos un poco para abajo en iOS para que queden centrados visualmente
-        paddingTop: Platform.OS === 'ios' ? 12 : 0,
-    }
+    },
 });
