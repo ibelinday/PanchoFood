@@ -8,10 +8,7 @@ export default function ProductosLayout() {
             <Stack.Screen
                 options={{
                     title: "Producto",
-                    headerTitleStyle: { color: "#ffffff" },
-                    headerShown: true,
-                    headerStyle: { backgroundColor: "#ED6B5A" },
-                    headerLeft: () => <BackButton color="#ffffff" />
+                    headerShown: false,
                 }}
             />
             <ProductosShowScreen />

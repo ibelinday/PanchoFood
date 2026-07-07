@@ -1,7 +1,7 @@
 import { ThemeColors } from "../types/Theme";
 
 export const paletaClaro: ThemeColors = {
-    fondo: "#e8e8e8",
-    textoPrincipal: "#121212",
-    principal: "#c944a3",
+    fondo: "#f5f2f5",
+    textoPrincipal: "#1d1a1d",
+    principal: "#a6517d",
 };

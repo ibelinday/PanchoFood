@@ -7,7 +7,7 @@ type IndicadorCargaProps = {
     height?: number;
 }
 
-export default function IndicadorCarga({ color = '#c944a3', width = 40, height = 40 }: IndicadorCargaProps) {
+export default function IndicadorCarga({ color = '#a6517d', width = 40, height = 40 }: IndicadorCargaProps) {
     return (
         <View style={[styles.container, { width, height }]}>
             <ActivityIndicator size="large" color={color} />

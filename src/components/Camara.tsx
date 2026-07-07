@@ -15,7 +15,7 @@ import {
     View,
 } from "react-native";
 
-const PRIMARY = "#c944a3";
+const PRIMARY = "#a6517d";
 
 interface CamaraProps {
     visible: boolean;

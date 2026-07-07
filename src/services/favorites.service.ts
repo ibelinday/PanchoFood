@@ -22,7 +22,6 @@ export const eliminarFavorito = async (productoId: string) => {
 };
 
 export const obtenerFavoritos = async (): Promise<ProductoFavorito[]> => {
-    console.log("Obteniendo favoritos");
     const favoritos = await AsyncStorage.getItem(FAVORITOS_KEY);
     return favoritos ? JSON.parse(favoritos) : [];
 };

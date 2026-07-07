@@ -21,7 +21,7 @@ export function transformSearchProductsResponse(
             "";
 
         return {
-            id: product._id,
+            id: product.code || product._id,
             name: product.product_name,
             image_url: imageUrl,
             brands: product.brands,

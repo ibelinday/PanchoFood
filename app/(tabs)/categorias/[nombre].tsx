@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 // Componentes
 import BackButton from "@/src/components/BackButton";
 import Buscador from "@/src/components/Buscador";
-import Camara from "@/src/components/camara";
+import Camara from "@/src/components/Camara";
 import Producto from "@/src/components/Producto";
 import Texto from "@/src/components/Texto";
 
@@ -276,6 +276,6 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: -2 },
         shadowOpacity: 0.12,
         shadowRadius: 6,
-        backgroundColor: "#c944a3",
+        backgroundColor: "#a6517d",
     },
 });

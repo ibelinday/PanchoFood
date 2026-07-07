@@ -40,14 +40,11 @@ export async function searchProducts(
 
 export async function fetchProductByCode(code: string): Promise<Product | null> {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") ?? "https://world.openfoodfacts.org/api";
-    const apiHost = BASE_URL.endsWith("/api")
-        ? BASE_URL.replace(/\/api$/, "")
-        : BASE_URL;
-    const url = `${apiHost}/v0/product/${encodeURIComponent(code)}.json`;
+    const url = `${BASE_URL}/v0/product/${encodeURIComponent(code)}.json`;
 
     try {
         const response = await fetch(url, {
-            headers: { "User-Agent": "UNTDF TNT 2026" },
+            headers: { "User-Agent": "Mozilla/5.0" },
         });
 
         if (!response.ok) {
