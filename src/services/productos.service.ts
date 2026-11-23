@@ -4,11 +4,9 @@ export async function searchProducts(
     pageSize = 20,
 ): Promise<ProductSearchResponse> {
     const BASE_URL = process.env.EXPO_PUBLIC_API_URL?.replace(/\/$/, "") ?? "https://world.openfoodfacts.org/api";
-    const url = `${BASE_URL}/v0/search`;
+    const url = `${BASE_URL}/v2/search`;
     const params = new URLSearchParams({
-        tagtype_0: "categories",
-        tag_contains_0: "contains",
-        tag_0: categorias,
+        categories_tags: `en:${categorias}`,
         page: String(page),
         page_size: String(pageSize),
         fields: [
@@ -25,12 +23,31 @@ export async function searchProducts(
 
     const fullUrl = `${url}?${params.toString()}`;
 
-    const response = await fetch(fullUrl, {
+    let response = await fetch(fullUrl, {
         headers: { "User-Agent": "Mozilla/5.0" },
     });
 
     if (!response.ok) {
-        throw new Error(`Error HTTP: ${response.status}`);
+        const fallbackParams = new URLSearchParams({
+            search_simple: "1",
+            action: "process",
+            tagtype_0: "categories",
+            tag_contains_0: "contains",
+            tag_0: categorias,
+            page: String(page),
+            page_size: String(pageSize),
+            json: "1",
+            fields: params.get("fields") ?? "",
+        });
+        const fallbackUrl = `${BASE_URL.replace(/\/api$/, "")}/cgi/search.pl?${fallbackParams.toString()}`;
+
+        response = await fetch(fallbackUrl, {
+            headers: { "User-Agent": "Mozilla/5.0" },
+        });
+
+        if (!response.ok) {
+            throw new Error(`Error HTTP: ${response.status}`);
+        }
     }
 
     const data = await response.json();
